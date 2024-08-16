@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Palette</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #121212; /* Dark background color */
+            font-family: 'Arial', sans-serif;
+            color: #e0e0e0; /* Light text color for contrast */
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #d32f2f, #b71c1c); /* Gradient Navbar color */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* More pronounced shadow */
+        }
+
+        .navbar-brand {
+            color: #ffffff !important; /* Ensure white text color for Navbar brand */
+            font-weight: bold;
+        }
+
+        .navbar-nav .nav-link {
+            color: #ffffff !important;
+            font-size: 1.1rem;
+            padding: 0.75rem 1.25rem;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ffebee !important;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCI+PHBhdGggZD0iTTE4IDExYy0yLjQgMCAzLTIuNCAzLTMuNCwwLTQuOSA2LjcgMi42IDMuNSA1LjggNS4zIDQuMyA4LjMgMCAxLjQgMCAyLjQgMCAzLjEtMCA1LjEtMS41LTQuMy00LjgtMi4xLTQuOS00LjkgMS43LTEuOCAzLjUuMyA2LjktLjQgMCAxLjYtMS41IDMuMy0xLjUtMy4xIDAtMS41LTQuNS0yLjctMi44LTQuOS0yLjcgeiIvPjwvc3ZnPg==");
+        }
+
+        .container {
+            background: linear-gradient(#1e1e1e, #333333); /* Gradient background */
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+            margin-top: 70px; /* Space for the fixed Navbar */
+        }
+
+        h1, h2 {
+            color: #d32f2f; /* Red color for headers */
+            font-family: 'Arial Black', sans-serif;
+        }
+
+        .form-control {
+            border: 1px solid #d32f2f;
+            border-radius: 10px;
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 0.2rem rgba(211, 47, 47, 0.25);
+            border-color: #d32f2f;
+        }
+
+        .btn-primary {
+            background-color: #d32f2f;
+            border-color: #d32f2f;
+            border-radius: 10px;
+            padding: 10px 20px;
+        }
+
+        .btn-primary:hover {
+            background-color: #b71c1c; /* Darker red for hover effect */
+            border-color: #b71c1c;
+        }
+
+        .weather-info {
+            background-color: #1e1e1e;
+            border: 1px solid #d32f2f;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .weather-info:hover {
+            background-color: #333333;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .weather-icon {
+            width: 60px;
+            height: 60px;
+        }
+
+        .d-flex {
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <a class="navbar-brand" href="#">
+            <img src="https://storage.googleapis.com/bkt-static-tt/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+            SY Weather Palette App
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="mb-4">Weather Palette App</h1>
+        <form method="post">
+            <div class="form-group">
+                <label for="city">Enter city name:</label>
+                <input type="text" class="form-control" id="city" name="city" placeholder="e.g., Heidelberg" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Get Weather</button>
+        </form>
+        
+        {% if weather_data %}
+            <div class="weather-info mt-4">
+                <h2>Weather in {{ weather_data['name'] }}, {{ weather_data['sys']['country'] }}:</h2>
+                <div class="d-flex align-items-center">
+                    <img src="https://openweathermap.org/img/wn/{{ weather_data['weather'][0]['icon'] }}@2x.png" alt="Weather icon" class="weather-icon">
+                    <p class="ml-3 mb-0"><strong>Description:</strong> {{ weather_data['weather'][0]['description'] }}</p>
+                </div>
+                <p><strong>Temperature:</strong> {{ weather_data['main']['temp'] }}°C</p>
+                <p><strong>Humidity:</strong> {{ weather_data['main']['humidity'] }}%</p>
+                <p><strong>Wind Speed:</strong> {{ weather_data['wind']['speed'] }} m/s</p>
+            </div>
+        {% else %}
+            <p class="mt-4">Weather data unavailable.</p>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
