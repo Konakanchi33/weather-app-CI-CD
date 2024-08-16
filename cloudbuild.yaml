@@ -1,0 +1,27 @@
+steps:
+  # Step 1: Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/flask-weather-app', '.']
+
+  # Step 2: Push the Docker image to Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/flask-weather-app']
+
+  # Step 3: Deploy the Docker image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args: ['run', 'deploy', 'flask-weather-app', 
+           '--image', 'gcr.io/$PROJECT_ID/flask-weather-app', 
+           '--platform', 'managed',
+           '--region', 'us-central1', # Choose your preferred region
+           '--allow-unauthenticated']
+
+# Substitutions: You can define variables here
+substitutions:
+  _REGION: 'us-central1'
+
+# Timeout in case the build takes too long (optional)
+timeout: '900s'
+
+# Specify the Cloud Run service account for deployment (optional)
+serviceAccount: 'cloud-run-sa@${PROJECT_ID}.iam.gserviceaccount.com'
