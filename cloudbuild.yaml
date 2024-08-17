@@ -18,7 +18,16 @@ steps:
       'gcr.io/$PROJECT_ID/atmosphere-palette-app'
     ]
 
- 
+  # Step 4: Deploy the image to Cloud Run (if needed)
+  # Uncomment the lines below if you want to deploy to Cloud Run directly
+  # - name: 'gcr.io/cloud-builders/gcloud'
+  #   args: [
+  #     'run', 'deploy', 'atmosphere-palette-app',
+  #     '--image', 'gcr.io/$PROJECT_ID/atmosphere-palette-app',
+  #     '--platform', 'managed',
+  #     '--region', 'us-central1',  # You can change the region as per your needs
+  #     '--allow-unauthenticated'  # Optional: allows public access
+  #   ]
 
 images:
   - 'gcr.io/$PROJECT_ID/atmosphere-palette-app'
