@@ -31,3 +31,6 @@ steps:
 
 images:
   - 'gcr.io/$PROJECT_ID/atmosphere-palette-app'
+
+options:
+  defaultLogsBucketBehavior: 'REGIONAL_USER_OWNED_BUCKET
